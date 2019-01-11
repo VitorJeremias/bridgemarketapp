@@ -75,7 +75,7 @@ public class Main {
     }
   }
 
-  @PostMapping("/buy")
+  @RequestMapping("/buy")
   public String buy(Map<String, Object> model) {
     try (Connection connection = dataSource.getConnection()) {
       Statement stmt = connection.createStatement();
