@@ -28,6 +28,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import javax.sql.DataSource;
 import java.sql.Connection;
@@ -77,9 +78,9 @@ public class Main {
     }
   }
 
-  @RequestMapping("/buy/{product}")
+  @RequestMapping("/buy")
   @ResponseBody
-  public String buy(Map<String, Object> model, @PathVariable("product") String product) {
+  public String buy(Map<String, Object> model, @RequestParam(value="text", required=false) String product) {
     try (Connection connection = dataSource.getConnection()) {
       Statement stmt = connection.createStatement();
       stmt.executeUpdate("CREATE TABLE IF NOT EXISTS tb_buy (ds_buy varchar)");
