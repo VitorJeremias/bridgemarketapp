@@ -26,6 +26,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 
 import javax.sql.DataSource;
 import java.sql.Connection;
@@ -75,12 +76,12 @@ public class Main {
     }
   }
 
-  @RequestMapping("/buy")
-  public String buy(Map<String, Object> model) {
+  @RequestMapping("/buy/{product}")
+  public String buy(Map<String, Object> model, @PathVariable("product") String product) {
     try (Connection connection = dataSource.getConnection()) {
       Statement stmt = connection.createStatement();
       stmt.executeUpdate("CREATE TABLE IF NOT EXISTS tb_buy (ds_buy varchar)");
-      stmt.executeUpdate("INSERT INTO tb_buy VALUES ('red bull')");
+      stmt.executeUpdate("INSERT INTO tb_buy VALUES ('"+product+"')");
       ResultSet rs = stmt.executeQuery("SELECT ds_buy FROM tb_buy");
 
       ArrayList<String> output = new ArrayList<String>();
