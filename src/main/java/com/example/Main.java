@@ -77,6 +77,7 @@ public class Main {
   }
 
   @RequestMapping("/buy/{product}")
+  @ResponseBody
   public String buy(Map<String, Object> model, @PathVariable("product") String product) {
     try (Connection connection = dataSource.getConnection()) {
       Statement stmt = connection.createStatement();
@@ -86,7 +87,7 @@ public class Main {
 
       String output = "";
       while (rs.next()) {
-        output += rs.getString("ds_buy")+"<br>";
+        output += rs.getString("ds_buy")+"\n";
       }
 
       return output;
