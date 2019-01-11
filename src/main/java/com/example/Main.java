@@ -79,7 +79,7 @@ public class Main {
   public String buy(Map<String, Object> model) {
     try (Connection connection = dataSource.getConnection()) {
       Statement stmt = connection.createStatement();
-      stmt.executeUpdate("CREATE TABLE IF NOT EXISTS tb_buy (varchar ds_buy)");
+      stmt.executeUpdate("CREATE TABLE IF NOT EXISTS tb_buy (ds_buy varchar)");
       stmt.executeUpdate("INSERT INTO tb_buy VALUES ('red bull')");
       ResultSet rs = stmt.executeQuery("SELECT ds_buy FROM tb_buy");
 
