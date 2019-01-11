@@ -84,13 +84,12 @@ public class Main {
       stmt.executeUpdate("INSERT INTO tb_buy VALUES ('"+product+"')");
       ResultSet rs = stmt.executeQuery("SELECT ds_buy FROM tb_buy");
 
-      ArrayList<String> output = new ArrayList<String>();
+      String output = "";
       while (rs.next()) {
-        output.add("Read from DB: " + rs.getString("ds_buy"));
+        output += rs.getString("ds_buy")+"<br>";
       }
 
-      model.put("records", output);
-      return "buy";
+      return output;
     } catch (Exception e) {
       model.put("message", e.getMessage());
       return "error";
