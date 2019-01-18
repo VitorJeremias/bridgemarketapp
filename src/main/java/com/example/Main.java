@@ -140,7 +140,7 @@ public class Main {
   }
 
   private String listToBuy(Statement stmt) throws Exception {
-    ResultSet rs = stmt.executeQuery("SELECT ds_buy FROM tb_buy;");
+    ResultSet rs = stmt.executeQuery("SELECT ds_buy, ds_user FROM tb_buy;");
 
     String output = "-- ITENS A SEREM COMPRADOS\n";
     while (rs.next()) {
