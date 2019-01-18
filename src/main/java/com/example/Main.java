@@ -101,7 +101,7 @@ public class Main {
       stmt.executeUpdate("CREATE TABLE IF NOT EXISTS tb_buy (ds_buy varchar);");
       stmt.executeUpdate("INSERT INTO tb_buy VALUES ('"+product+"');");
 
-      sendListToBuy(stmt);
+      sendMessage(listToBuy(stmt));
 
       return "Item adicionado com sucesso.";
     } catch (Exception e) {
@@ -116,6 +116,8 @@ public class Main {
     try (Connection connection = dataSource.getConnection()) {
       Statement stmt = connection.createStatement();
       stmt.executeUpdate("DELETE FROM tb_buy WHERE tb_buy.ds_buy = '"+product+"';");
+
+      sendMessage("-- ALGUÉM ESTÁ INDO COMPRAR O ITEM: " + product);
 
       return "-- TÔ INDO COMPRAR: " + product + "\n";
     } catch (Exception e) {
@@ -146,9 +148,7 @@ public class Main {
     return output;
   }
 
-  private void sendListToBuy(Statement stmt) throws Exception {
-    String value = listToBuy(stmt);
-
+  private void sendMessage(String value) throws Exception {
     String url = "https://hooks.slack.com/services/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";
 
     Payload payload = Payload.builder()
