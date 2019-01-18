@@ -98,7 +98,7 @@ public class Main {
   public String remove(Map<String, Object> model, @RequestParam(value="text", required=false) String product) {
     try (Connection connection = dataSource.getConnection()) {
       Statement stmt = connection.createStatement();
-      stmt.executeUpdate("DELETE FROM tb_buy WHERE tb_buy.ds_buy equals '"+product+"';");
+      stmt.executeUpdate("DELETE FROM tb_buy WHERE tb_buy.ds_buy = '"+product+"';");
       
       String removeReturn = "-- TÔ INDO COMPRAR: " + product + "\n\n";
 
