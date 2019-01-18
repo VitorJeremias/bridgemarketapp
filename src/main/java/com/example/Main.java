@@ -119,7 +119,7 @@ public class Main {
       Statement stmt = connection.createStatement();
       stmt.executeUpdate("DELETE FROM tb_buy WHERE tb_buy.ds_buy = '"+product+"';");
 
-      sendMessage("-- " + userName + " ESTÁ INDO COMPRAR O ITEM: " + product);
+      sendMessage("-- " + userName + " está indo comprar o item: " + product);
 
       return "Item removido com sucesso!";
     } catch (Exception e) {
