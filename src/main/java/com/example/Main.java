@@ -37,6 +37,8 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.Map;
+import com.github.seratch.jslack.*;
+import com.github.seratch.jslack.api.webhook.*;
 
 @Controller
 @SpringBootApplication
@@ -86,7 +88,10 @@ public class Main {
       stmt.executeUpdate("CREATE TABLE IF NOT EXISTS tb_buy (ds_buy varchar);");
       stmt.executeUpdate("INSERT INTO tb_buy VALUES ('"+product+"');");
 
-      return listToBuy(stmt);
+      sendListToBuy(stmt);
+
+      return "";
+      //return listToBuy(stmt);
     } catch (Exception e) {
       model.put("message", e.getMessage());
       return "error";
@@ -118,6 +123,21 @@ public class Main {
     }
     
     return output;
+  }
+
+  private void sendListToBuy(Statement stmt) throws Exception {
+    String value = listToBuy(stmt);
+
+    String url = System.getenv("https://hooks.slack.com/services/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");
+
+    Payload payload = Payload.builder()
+      .channel("mercado")
+      .username("Tô indo no mercado")
+      .text(value)
+      .build();
+
+    Slack slack = Slack.getInstance();
+    slack.send(url, payload);
   }
 
   @Bean
