@@ -103,7 +103,7 @@ public class Main {
 
       sendMessage(listToBuy(stmt));
 
-      return "Item adicionado com sucesso.";
+      return "Item adicionado com sucesso!";
     } catch (Exception e) {
       model.put("message", e.getMessage());
       return "ERROR - " + e.getMessage();
@@ -119,7 +119,7 @@ public class Main {
 
       sendMessage("-- ALGUÉM ESTÁ INDO COMPRAR O ITEM: " + product);
 
-      return "-- TÔ INDO COMPRAR: " + product + "\n";
+      return "Item removido com sucesso!";
     } catch (Exception e) {
       model.put("message", e.getMessage());
       return "ERROR - " + e.getMessage();
