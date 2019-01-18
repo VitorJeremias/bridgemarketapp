@@ -59,6 +59,19 @@ public class Main {
     return "index";
   }
 
+  @RequestMapping("/list")
+  @ResponseBody
+  public String list(Map<String, Object> model, @RequestParam(value="text", required=false) String product) {
+    try (Connection connection = dataSource.getConnection()) {
+      Statement stmt = connection.createStatement();
+
+      return listToBuy(stmt);
+    } catch (Exception e) {
+      model.put("message", e.getMessage());
+      return "ERROR - " + e.getMessage();
+    }
+  }
+
   @RequestMapping("/db")
   String db(Map<String, Object> model) {
     try (Connection connection = dataSource.getConnection()) {
