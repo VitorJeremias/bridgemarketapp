@@ -136,7 +136,7 @@ public class Main {
   private void sendListToBuy(Statement stmt) throws Exception {
     String value = listToBuy(stmt);
 
-    String url = System.getenv("https://hooks.slack.com/services/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");
+    String url = "https://hooks.slack.com/services/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";
 
     Payload payload = Payload.builder()
       .channel("#mercado")
