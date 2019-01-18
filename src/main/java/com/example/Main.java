@@ -61,9 +61,9 @@ public class Main {
   String db(Map<String, Object> model) {
     try (Connection connection = dataSource.getConnection()) {
       Statement stmt = connection.createStatement();
-      stmt.executeUpdate("CREATE TABLE IF NOT EXISTS ticks (tick timestamp)");
-      stmt.executeUpdate("INSERT INTO ticks VALUES (now())");
-      ResultSet rs = stmt.executeQuery("SELECT tick FROM ticks");
+      stmt.executeUpdate("CREATE TABLE IF NOT EXISTS ticks (tick timestamp);");
+      stmt.executeUpdate("INSERT INTO ticks VALUES (now());");
+      ResultSet rs = stmt.executeQuery("SELECT tick FROM ticks;");
 
       ArrayList<String> output = new ArrayList<String>();
       while (rs.next()) {
@@ -83,20 +83,41 @@ public class Main {
   public String buy(Map<String, Object> model, @RequestParam(value="text", required=false) String product) {
     try (Connection connection = dataSource.getConnection()) {
       Statement stmt = connection.createStatement();
-      stmt.executeUpdate("CREATE TABLE IF NOT EXISTS tb_buy (ds_buy varchar)");
-      stmt.executeUpdate("INSERT INTO tb_buy VALUES ('"+product+"')");
-      ResultSet rs = stmt.executeQuery("SELECT ds_buy FROM tb_buy");
+      stmt.executeUpdate("CREATE TABLE IF NOT EXISTS tb_buy (ds_buy varchar);");
+      stmt.executeUpdate("INSERT INTO tb_buy VALUES ('"+product+"');");
 
-      String output = "";
-      while (rs.next()) {
-        output += rs.getString("ds_buy")+"\n";
-      }
-
-      return output;
+      return listToBuy(stmt);
     } catch (Exception e) {
       model.put("message", e.getMessage());
       return "error";
     }
+  }
+
+  @RequestMapping("/remove")
+  @ResponseBody
+  public String remove(Map<String, Object> model, @RequestParam(value="text", required=false) String product) {
+    try (Connection connection = dataSource.getConnection()) {
+      Statement stmt = connection.createStatement();
+      stmt.executeUpdate("DELETE FROM tb_buy WHERE tb_buy.ds_buy equals '"+product+"';");
+      
+      String removeReturn = "-- TÔ INDO COMPRAR: " + product + "\n\n";
+
+      return removeReturn + listToBuy(stmt);
+    } catch (Exception e) {
+      model.put("message", e.getMessage());
+      return "error";
+    }
+  }
+
+  private String listToBuy(Statement stmt) throws Exception {
+    ResultSet rs = stmt.executeQuery("SELECT ds_buy FROM tb_buy;");
+
+    String output = "-- ITENS A SEREM COMPRADOS\n";
+    while (rs.next()) {
+      output += rs.getString("ds_buy")+"\n";
+    }
+    
+    return output;
   }
 
   @Bean
