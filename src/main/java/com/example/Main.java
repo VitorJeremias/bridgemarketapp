@@ -90,11 +90,10 @@ public class Main {
 
       sendListToBuy(stmt);
 
-      return "";
-      //return listToBuy(stmt);
+      return "Item adicionado com sucesso.";
     } catch (Exception e) {
       model.put("message", e.getMessage());
-      return "error";
+      return "ERROR - " + e.getMessage();
     }
   }
 
@@ -104,13 +103,22 @@ public class Main {
     try (Connection connection = dataSource.getConnection()) {
       Statement stmt = connection.createStatement();
       stmt.executeUpdate("DELETE FROM tb_buy WHERE tb_buy.ds_buy = '"+product+"';");
-      
-      String removeReturn = "-- TÔ INDO COMPRAR: " + product + "\n\n";
 
-      return removeReturn + listToBuy(stmt);
+      return "-- TÔ INDO COMPRAR: " + product + "\n";
     } catch (Exception e) {
       model.put("message", e.getMessage());
-      return "error";
+      return "ERROR - " + e.getMessage();
+    }
+  }
+
+  @RequestMapping("/remove_all")
+  @ResponseBody
+  public void removeAll(Map<String, Object> model, @RequestParam(value="text", required=false) String product) {
+    try (Connection connection = dataSource.getConnection()) {
+      Statement stmt = connection.createStatement();
+      stmt.executeUpdate("DELETE FROM tb_buy;");
+    } catch (Exception e) {
+      // do nothing
     }
   }
 
