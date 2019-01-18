@@ -139,7 +139,7 @@ public class Main {
     String url = System.getenv("https://hooks.slack.com/services/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");
 
     Payload payload = Payload.builder()
-      .channel("mercado")
+      .channel("#mercado")
       .username("Tô indo no mercado")
       .text(value)
       .build();
