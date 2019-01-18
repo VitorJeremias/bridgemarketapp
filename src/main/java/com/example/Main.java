@@ -95,11 +95,12 @@ public class Main {
 
   @RequestMapping("/buy")
   @ResponseBody
-  public String buy(Map<String, Object> model, @RequestParam(value="text", required=false) String product) {
+  public String buy(Map<String, Object> model, @RequestParam(value="text", required=false) String product, 
+    @RequestParam(value="user_name", required=false) String userName) {
     try (Connection connection = dataSource.getConnection()) {
       Statement stmt = connection.createStatement();
-      stmt.executeUpdate("CREATE TABLE IF NOT EXISTS tb_buy (ds_buy varchar);");
-      stmt.executeUpdate("INSERT INTO tb_buy VALUES ('"+product+"');");
+      stmt.executeUpdate("CREATE TABLE IF NOT EXISTS tb_buy (ds_buy varchar, ds_user varchar);");
+      stmt.executeUpdate("INSERT INTO tb_buy VALUES ('" + product + "' ,'" + userName + "');");
 
       sendMessage(listToBuy(stmt));
 
@@ -112,12 +113,13 @@ public class Main {
 
   @RequestMapping("/remove")
   @ResponseBody
-  public String remove(Map<String, Object> model, @RequestParam(value="text", required=false) String product) {
+  public String remove(Map<String, Object> model, @RequestParam(value="text", required=false) String product, 
+    @RequestParam(value="user_name", required=false) String userName) {
     try (Connection connection = dataSource.getConnection()) {
       Statement stmt = connection.createStatement();
       stmt.executeUpdate("DELETE FROM tb_buy WHERE tb_buy.ds_buy = '"+product+"';");
 
-      sendMessage("-- ALGUÉM ESTÁ INDO COMPRAR O ITEM: " + product);
+      sendMessage("-- " + userName + " ESTÁ INDO COMPRAR O ITEM: " + product);
 
       return "Item removido com sucesso!";
     } catch (Exception e) {
@@ -131,7 +133,7 @@ public class Main {
   public void removeAll(Map<String, Object> model, @RequestParam(value="text", required=false) String product) {
     try (Connection connection = dataSource.getConnection()) {
       Statement stmt = connection.createStatement();
-      stmt.executeUpdate("DELETE FROM tb_buy;");
+      stmt.executeUpdate("DROP TABLE tb_buy;");
     } catch (Exception e) {
       // do nothing
     }
@@ -142,7 +144,7 @@ public class Main {
 
     String output = "-- ITENS A SEREM COMPRADOS\n";
     while (rs.next()) {
-      output += rs.getString("ds_buy")+"\n";
+      output += rs.getString("ds_buy")+" - "+rs.getString("ds_user")+"\n";
     }
     
     return output;
