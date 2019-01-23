@@ -139,6 +139,16 @@ public class Main {
     }
   }
 
+  @RequestMapping("/going")
+  @ResponseBody
+  public void going(Map<String, Object> model, @RequestParam(value="user_name", required=false) String userName) {
+    try {
+      sendMessage(userName + " sinaliza que estará indo no mercado em breve. Façam seus pedidos!");
+    } catch (Exception e) {
+      // do nothing
+    }
+  }
+
   private String listToBuy(Statement stmt) throws Exception {
     ResultSet rs = stmt.executeQuery("SELECT ds_buy, ds_user FROM tb_buy;");
 
