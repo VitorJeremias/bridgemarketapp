@@ -109,11 +109,11 @@ public class Main {
 
 	@RequestMapping("/buy")
 	@ResponseBody
-	public String buy(Map<String, Object> model, @RequestParam(value = "text", required = false) String product,
+	public String buy(Map<String, Object> model, @RequestParam(value = "co_item", required = false) int id, @RequestParam(value = "text", required = false) String product,
 			@RequestParam(value = "user_name", required = false) String userName) {
 		try (Connection connection = this.dataSource.getConnection()) {
 			Statement stmt = connection.createStatement();
-			stmt.executeUpdate("CREATE TABLE IF NOT EXISTS tb_buy (ds_buy varchar, ds_user varchar);");
+			stmt.executeUpdate("CREATE TABLE IF NOT EXISTS tb_buy (co_item serial primary key, ds_buy varchar, ds_user varchar);");
 			stmt.executeUpdate("INSERT INTO tb_buy VALUES ('" + product + "' ,'" + userName.substring(0, 1).toUpperCase() + userName.substring(1) + "');");
 
 			this.sendMessage(this.listToBuy(stmt));
@@ -127,13 +127,13 @@ public class Main {
 
 	@RequestMapping("/remove")
 	@ResponseBody
-	public String remove(Map<String, Object> model, @RequestParam(value = "text", required = false) String product,
+	public String remove(Map<String, Object> model, @RequestParam(value = "co_item", required = false) int id, @RequestParam(value = "text", required = false) String product,
 			@RequestParam(value = "user_name", required = false) String userName) {
 		try (Connection connection = this.dataSource.getConnection()) {
 			Statement stmt = connection.createStatement();
-			stmt.executeUpdate("DELETE FROM tb_buy WHERE tb_buy.ds_buy = '" + product + "';");
+			stmt.executeUpdate("DELETE FROM tb_buy WHERE tb_buy.co_item = '" + id + "';");
 
-			this.sendMessage("-- " + userName.substring(0, 1).toUpperCase() + userName.substring(1) + " está indo comprar o item: " + product);
+			this.sendMessage("-- " + userName.substring(0, 1).toUpperCase() + userName.substring(1) + " está indo comprar o item: " + id + ". " + product);
 
 			return "Item removido com sucesso!";
 		} catch (Exception e) {
@@ -164,11 +164,11 @@ public class Main {
 	}
 
 	private String listToBuy(Statement stmt) throws Exception {
-		ResultSet rs = stmt.executeQuery("SELECT ds_buy, ds_user FROM tb_buy;");
+		ResultSet rs = stmt.executeQuery("SELECT co_item, ds_buy, ds_user FROM tb_buy;");
 
 		String output = "-- ITENS A SEREM COMPRADOS\n";
 		while (rs.next()) {
-			output += rs.getString("ds_buy") + " - " + rs.getString("ds_user") + "\n";
+			output += rs.getString("co_item") + ". " + rs.getString("ds_buy") + " - " + rs.getString("ds_user") + "\n";
 		}
 
 		return output;
