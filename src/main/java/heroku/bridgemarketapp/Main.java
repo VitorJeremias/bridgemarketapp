@@ -114,7 +114,7 @@ public class Main {
 		try (Connection connection = this.dataSource.getConnection()) {
 			Statement stmt = connection.createStatement();
 			stmt.executeUpdate("CREATE TABLE IF NOT EXISTS tb_buy (co_item serial primary key, ds_buy varchar, ds_user varchar);");
-			stmt.executeUpdate("INSERT INTO tb_buy VALUES ('" + product + "' ,'" + userName.substring(0, 1).toUpperCase() + userName.substring(1) + "');");
+			stmt.executeUpdate("INSERT INTO tb_buy (ds_buy, ds_user) VALUES ('" + product + "' ,'" + userName.substring(0, 1).toUpperCase() + userName.substring(1) + "');");
 
 			this.sendMessage(this.listToBuy(stmt));
 
