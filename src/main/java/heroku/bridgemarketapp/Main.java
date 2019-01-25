@@ -1,6 +1,8 @@
 package heroku.bridgemarketapp;
 
+import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileReader;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -51,12 +53,21 @@ public class Main {
 
 		try (Connection connection = this.dataSource.getConnection()) {
 			MetaDataExporter exporter = new MetaDataExporter();
-			exporter.setPackageName("com.myproject.mydomain");
+			exporter.setPackageName("heroku.bridgemarketapp");
 			File metamodel = new File("src/main/java/heroku/bridgemarketapp/model");
 			exporter.setTargetFolder(metamodel);
 			exporter.export(connection.getMetaData());
 
-			return metamodel.toString();
+			String fileString = "";
+
+			try (BufferedReader br = new BufferedReader(new FileReader(metamodel))) {
+				String line = null;
+				while ((line = br.readLine()) != null) {
+					fileString += line;
+				}
+			}
+
+			return fileString;
 		} catch (Exception e) {
 			return "error";
 		}
