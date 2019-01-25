@@ -25,8 +25,6 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RequestParam;
 
@@ -143,7 +141,7 @@ public class Main {
   @ResponseBody
   public void going(Map<String, Object> model, @RequestParam(value="user_name", required=false) String userName) {
     try {
-      sendMessage(userName + " sinaliza que estará indo no mercado em breve. Façam seus pedidos!");
+      sendMessage(userName.substring(0,1).toUpperCase() + userName.substring(1) + " sinaliza que estará indo no mercado em breve. Façam seus pedidos!");
     } catch (Exception e) {
       // do nothing
     }
@@ -161,10 +159,10 @@ public class Main {
   }
 
   private void sendMessage(String value) throws Exception {
-    String url = "https://hooks.slack.com/services/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";
+    String url = "https://hooks.slack.com/services/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";
 
     Payload payload = Payload.builder()
-      .channel("#mercado")
+      .channel("#teste")
       .username("Tô indo no mercado")
       .text(value)
       .build();
