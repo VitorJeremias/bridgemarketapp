@@ -60,7 +60,7 @@ public class Main {
 
 			String fileString = "";
 
-			try (BufferedReader br = new BufferedReader(new FileReader(metamodel))) {
+			try (BufferedReader br = new BufferedReader(new FileReader(metamodel.getAbsolutePath()))) {
 				String line = null;
 				while ((line = br.readLine()) != null) {
 					fileString += line;
