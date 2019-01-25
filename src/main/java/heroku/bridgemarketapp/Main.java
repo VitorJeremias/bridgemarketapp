@@ -46,15 +46,17 @@ public class Main {
 	}
 
 	@RequestMapping("/generate_dsl")
+	@ResponseBody
 	public String generate() {
 
 		try (Connection connection = this.dataSource.getConnection()) {
 			MetaDataExporter exporter = new MetaDataExporter();
 			exporter.setPackageName("com.myproject.mydomain");
-			exporter.setTargetFolder(new File("src/main/java/heroku/bridgemarketapp/model"));
+			File metamodel = new File("src/main/java/heroku/bridgemarketapp/model");
+			exporter.setTargetFolder(metamodel);
 			exporter.export(connection.getMetaData());
 
-			return "Success!";
+			return metamodel.toString();
 		} catch (Exception e) {
 			return "error";
 		}
