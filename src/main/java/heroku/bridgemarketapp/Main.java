@@ -109,11 +109,11 @@ public class Main {
 
 	@RequestMapping("/buy")
 	@ResponseBody
-	public String buy(Map<String, Object> model, @RequestParam(value = "co_item", required = false) int id, @RequestParam(value = "text", required = false) String product,
+	public String buy(Map<String, Object> model, @RequestParam(value = "co_item", required = true) int id, @RequestParam(value = "text", required = false) String product,
 			@RequestParam(value = "user_name", required = false) String userName) {
 		try (Connection connection = this.dataSource.getConnection()) {
 			Statement stmt = connection.createStatement();
-			stmt.executeUpdate("CREATE TABLE IF NOT EXISTS tb_buy (co_item serial primary key, ds_buy varchar, ds_user varchar);");
+			stmt.executeUpdate("CREATE TABLE IF NOT EXISTS tb_buy (co_item serial, ds_buy varchar, ds_user varchar);");
 			stmt.executeUpdate("INSERT INTO tb_buy (ds_buy, ds_user) VALUES ('" + product + "' ,'" + userName.substring(0, 1).toUpperCase() + userName.substring(1) + "');");
 
 			this.sendMessage(this.listToBuy(stmt));
@@ -127,7 +127,7 @@ public class Main {
 
 	@RequestMapping("/remove")
 	@ResponseBody
-	public String remove(Map<String, Object> model, @RequestParam(value = "co_item", required = false) int id, @RequestParam(value = "text", required = false) String product,
+	public String remove(Map<String, Object> model, @RequestParam(value = "co_item", required = true) int id, @RequestParam(value = "text", required = false) String product,
 			@RequestParam(value = "user_name", required = false) String userName) {
 		try (Connection connection = this.dataSource.getConnection()) {
 			Statement stmt = connection.createStatement();
