@@ -69,7 +69,7 @@ public class Main {
 
 			return fileString;
 		} catch (Exception e) {
-			return "error";
+			return "error" + e.getMessage();
 		}
 	}
 
