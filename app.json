@@ -1,5 +1,5 @@
 {
-  "name": "Start on Heroku: Java",
-  "description": "A barebones Java app, which can easily be deployed to Heroku.",
+  "name": "Bridge Market App",
+  "description": "Escambos diários no laboratório bridge_",
   "addons": [ "heroku-postgresql" ]
 }
