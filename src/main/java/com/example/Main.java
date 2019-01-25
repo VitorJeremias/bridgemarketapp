@@ -25,8 +25,6 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RequestParam;
 
@@ -100,7 +98,7 @@ public class Main {
     try (Connection connection = dataSource.getConnection()) {
       Statement stmt = connection.createStatement();
       stmt.executeUpdate("CREATE TABLE IF NOT EXISTS tb_buy (ds_buy varchar, ds_user varchar);");
-      stmt.executeUpdate("INSERT INTO tb_buy VALUES ('" + product + "' ,'" + userName + "');");
+      stmt.executeUpdate("INSERT INTO tb_buy VALUES ('" + product + "' ,'" + userName.substring(0,1).toUpperCase() + userName.substring(1) + "');");
 
       sendMessage(listToBuy(stmt));
 
@@ -119,7 +117,7 @@ public class Main {
       Statement stmt = connection.createStatement();
       stmt.executeUpdate("DELETE FROM tb_buy WHERE tb_buy.ds_buy = '"+product+"';");
 
-      sendMessage("-- " + userName + " está indo comprar o item: " + product);
+      sendMessage("-- " + userName.substring(0,1).toUpperCase() + userName.substring(1) + " está indo comprar o item: " + product);
 
       return "Item removido com sucesso!";
     } catch (Exception e) {
@@ -143,7 +141,7 @@ public class Main {
   @ResponseBody
   public void going(Map<String, Object> model, @RequestParam(value="user_name", required=false) String userName) {
     try {
-      sendMessage(userName + " sinaliza que estará indo no mercado em breve. Façam seus pedidos!");
+      sendMessage(userName.substring(0,1).toUpperCase() + userName.substring(1) + " sinaliza que estará indo no mercado em breve. Façam seus pedidos!");
     } catch (Exception e) {
       // do nothing
     }
